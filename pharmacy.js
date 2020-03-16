@@ -10,68 +10,55 @@ export class Pharmacy {
   constructor(drugs = []) {
     this.drugs = drugs;
   }
-  decreaseBenefitValue(i, degradeMultiplier=1) {
-    this.drugs[i].benefit = this.drugs[i].benefit - (degradeMultiplier * 1);
+  changeBenefitValue(drug, degradeMultiplier) {
+    drug.benefit = drug.benefit - (degradeMultiplier * 1);
+    if (drug.benefit < 0) {
+      drug.benefit = 0;
+    }
+    if (drug.benefit > 50) {
+      drug.benefit = 50;
+    }
   }
   updateBenefitValue() {
     var degradeMultiplier = 1;
     for (var i = 0; i < this.drugs.length; i++) {
-      if (this.drugs[i].name == "Dafalgam") {
-        var degradeMultiplier = 2;
-      }
-      if (
-        this.drugs[i].name != "Herbal Tea" &&
-        this.drugs[i].name != "Fervex"
-      ) {
-        if (this.drugs[i].benefit > 0) {
-          if (this.drugs[i].name != "Magic Pill") {
-            this.decreaseBenefitValue(i, degradeMultiplier);
-          }
-        }
-      } else {
-        if (this.drugs[i].benefit < 50) {
-          this.drugs[i].benefit = this.drugs[i].benefit + 1;
-          if (this.drugs[i].name == "Fervex") {
-            if (this.drugs[i].expiresIn < 11) {
-              if (this.drugs[i].benefit < 50) {
-                this.drugs[i].benefit = this.drugs[i].benefit + 1;
-              }
-            }
-            if (this.drugs[i].expiresIn < 6) {
-              if (this.drugs[i].benefit < 50) {
-                this.drugs[i].benefit = this.drugs[i].benefit + 1;
-              }
-            }
-          }
-        }
-      }
       if (this.drugs[i].name != "Magic Pill") {
         this.drugs[i].expiresIn = this.drugs[i].expiresIn - 1;
       }
-      if (this.drugs[i].expiresIn < 0) {
-        if (this.drugs[i].name != "Herbal Tea") {
-          if (this.drugs[i].name != "Fervex") {
-            if (this.drugs[i].benefit > 0) {
-              if (this.drugs[i].name != "Magic Pill") {
-                this.decreaseBenefitValue(i, degradeMultiplier);
-              }
-            }
-          } else {
-            this.drugs[i].benefit =
-              this.drugs[i].benefit - this.drugs[i].benefit;
+      switch(this.drugs[i].name) {
+        case "Dafalgam":
+          var degradeMultiplier = 2;
+          break;
+        case "Magic Pill":
+          var degradeMultiplier = 0;
+          break;
+        case "Herbal Tea":
+          var degradeMultiplier = -1;
+          if (this.drugs[i].expiresIn < 0) {
+            var degradeMultiplier = -2;
           }
-        } else {
-          if (this.drugs[i].benefit < 50) {
-            this.drugs[i].benefit = this.drugs[i].benefit + 1;
+          break;
+        case "Fervex":
+          var degradeMultiplier = -1;
+          if (this.drugs[i].expiresIn <= 10) {
+            var degradeMultiplier = -2;
           }
+          if (this.drugs[i].expiresIn <= 5) {
+            var degradeMultiplier = -3;
+          }
+          if (this.drugs[i].expiresIn <0) {
+            var degradeMultiplier = this.drugs[i].benefit;
+          }
+          break;
+        default:
+          var degradeMultiplier = 1;
+          if (this.drugs[i].expiresIn < 0) {
+            var degradeMultiplier = 2;
+          }
+          break;
         }
-      }
+        this.changeBenefitValue(this.drugs[i], degradeMultiplier)
     }
-
     return this.drugs;
-  }
-
-  decreaseBenefitValue(i, degradeMultiplier) {
-    this.drugs[i].benefit = this.drugs[i].benefit - (degradeMultiplier * 1);
   }
 }
