@@ -10,15 +10,22 @@ export class Pharmacy {
   constructor(drugs = []) {
     this.drugs = drugs;
   }
+  decreaseBenefitValue(i, degradeMultiplier=1) {
+    this.drugs[i].benefit = this.drugs[i].benefit - (degradeMultiplier * 1);
+  }
   updateBenefitValue() {
+    var degradeMultiplier = 1;
     for (var i = 0; i < this.drugs.length; i++) {
+      if (this.drugs[i].name == "Dafalgam") {
+        var degradeMultiplier = 2;
+      }
       if (
         this.drugs[i].name != "Herbal Tea" &&
         this.drugs[i].name != "Fervex"
       ) {
         if (this.drugs[i].benefit > 0) {
           if (this.drugs[i].name != "Magic Pill") {
-            this.drugs[i].benefit = this.drugs[i].benefit - 1;
+            this.decreaseBenefitValue(i, degradeMultiplier);
           }
         }
       } else {
@@ -46,7 +53,7 @@ export class Pharmacy {
           if (this.drugs[i].name != "Fervex") {
             if (this.drugs[i].benefit > 0) {
               if (this.drugs[i].name != "Magic Pill") {
-                this.drugs[i].benefit = this.drugs[i].benefit - 1;
+                this.decreaseBenefitValue(i, degradeMultiplier);
               }
             }
           } else {
@@ -62,5 +69,9 @@ export class Pharmacy {
     }
 
     return this.drugs;
+  }
+
+  decreaseBenefitValue(i, degradeMultiplier) {
+    this.drugs[i].benefit = this.drugs[i].benefit - (degradeMultiplier * 1);
   }
 }

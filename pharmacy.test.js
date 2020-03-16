@@ -51,4 +51,9 @@ describe("Pharmacy", () => {
       [new Drug("Fervex", -1, 0)]
     );
   });
+  it("Dafalgam Benefit decreases twice as fast", () => {
+    expect(new Pharmacy([new Drug("Dafalgam", 2, 3)]).updateBenefitValue()).toEqual(
+      [new Drug("Dafalgam", 1, 1)]
+    );
+  });
 });
