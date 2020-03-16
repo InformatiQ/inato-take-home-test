@@ -56,4 +56,9 @@ describe("Pharmacy", () => {
       [new Drug("Dafalgam", 1, 1)]
     );
   });
+  it("Dafalgam Benefit decreases twice as fast after expiry too", () => {
+    expect(new Pharmacy([new Drug("Dafalgam", 0, 5)]).updateBenefitValue()).toEqual(
+      [new Drug("Dafalgam", -1, 1)]
+    );
+  });
 });

@@ -28,6 +28,9 @@ export class Pharmacy {
       switch(this.drugs[i].name) {
         case "Dafalgam":
           var degradeMultiplier = 2;
+          if (this.drugs[i].expiresIn < 0) {
+            var degradeMultiplier = 4;
+          }
           break;
         case "Magic Pill":
           var degradeMultiplier = 0;
